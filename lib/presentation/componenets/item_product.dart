@@ -51,17 +51,15 @@ class ItemProduct extends StatelessWidget {
                           imageUrl: imgUrl,
                           fit: BoxFit.scaleDown,
                           placeholder:
-                              (context, url) =>
-                              Shimmer.fromColors(
+                              (context, url) => Shimmer.fromColors(
                                 baseColor: Colors.grey[300]!,
                                 highlightColor: Colors.grey[100]!,
                                 child: Container(color: Colors.white),
                               ),
                           errorWidget:
-                              (context, url, error) =>
-                          const Center(
-                            child: Icon(Icons.error, color: Colors.red),
-                          ),
+                              (context, url, error) => const Center(
+                                child: Icon(Icons.error, color: Colors.red),
+                              ),
                         ),
                       ),
                       Column(
@@ -190,17 +188,15 @@ Widget hitProductCard({
                             imageUrl: imageUrl,
                             width: 180,
                             placeholder:
-                                (context, url) =>
-                                Shimmer.fromColors(
+                                (context, url) => Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,
                                   highlightColor: Colors.grey[100]!,
                                   child: Container(color: Colors.white),
                                 ),
                             errorWidget:
-                                (context, url, error) =>
-                            const Center(
-                              child: Icon(Icons.error, color: Colors.red),
-                            ),
+                                (context, url, error) => const Center(
+                                  child: Icon(Icons.error, color: Colors.red),
+                                ),
                             height: 180,
                           ),
                         ),
@@ -320,7 +316,6 @@ Widget hitProductCard({
                       price: price,
                       // onClick: (){}
                     ),
-
                   ],
                 ),
               ),
@@ -436,8 +431,7 @@ Widget horizontalProductCard({
                       imageUrl: imageUrl,
                       fit: BoxFit.cover,
                       placeholder:
-                          (context, url) =>
-                          Shimmer.fromColors(
+                          (context, url) => Shimmer.fromColors(
                             baseColor: Colors.grey[300]!,
                             highlightColor: Colors.grey[100]!,
                             child: Container(
@@ -447,10 +441,9 @@ Widget horizontalProductCard({
                             ),
                           ),
                       errorWidget:
-                          (context, url, error) =>
-                      const Center(
-                        child: Icon(Icons.error, color: Colors.red),
-                      ),
+                          (context, url, error) => const Center(
+                            child: Icon(Icons.error, color: Colors.red),
+                          ),
                     ),
                   ),
                   if (stickers != null)
@@ -623,13 +616,16 @@ class ItemProductWithCounter extends StatefulWidget {
   @override
   State<ItemProductWithCounter> createState() => _ItemProductWithCounterState();
 }
+
 class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
   late int itemCount;
+  bool isFavourite = false;
 
   @override
   void initState() {
-    super.initState();
     itemCount = widget.initialCount;
+    isFavourite = HiveHelper.isFavourite(widget.productId ?? 0);
+    super.initState();
   }
 
   void _increment() {
@@ -657,7 +653,10 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Colors.white,),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -678,18 +677,20 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
                           child: CachedNetworkImage(
                             imageUrl: widget.imageUrl,
                             fit: BoxFit.cover,
-                            placeholder: (context, url) => Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                width: 100,
-                                height: 100,
-                                color: Colors.white,
-                              ),
-                            ),
-                            errorWidget: (context, url, error) => const Center(
-                              child: Icon(Icons.error, color: Colors.red),
-                            ),
+                            placeholder:
+                                (context, url) => Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: 100,
+                                    height: 100,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                            errorWidget:
+                                (context, url, error) => const Center(
+                                  child: Icon(Icons.error, color: Colors.red),
+                                ),
                           ),
                         ),
                       ],
@@ -736,7 +737,10 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
                     ),
                     Text(
                       '$itemCount',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     IconButton(
                       onPressed: _increment,
@@ -750,7 +754,10 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
                       onPressed: () {
                         widget.onLikeClick.call();
                       },
-                      icon: const Icon(Icons.favorite_border),
+                      icon:
+                          isFavourite
+                              ? Icon(Icons.favorite)
+                              : Icon(Icons.favorite_border),
                     ),
                     IconButton(
                       onPressed: () {
@@ -768,6 +775,3 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
     );
   }
 }
-
-
-

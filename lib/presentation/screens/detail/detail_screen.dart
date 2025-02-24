@@ -2,10 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:texnomart_clone/presentation/screens/detail/bloc/detail_bloc.dart';
 import 'package:texnomart_clone/presentation/screens/detail/component/item_detail.dart';
 import 'package:texnomart_clone/presentation/screens/read_detail/read_detail_screen.dart';
 
+import '../../../data/hive/hive_helper.dart';
+import '../../../data/models/product/product_model.dart';
 import '../../componenets/item_product.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -18,14 +21,20 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  bool isFavourite = false;
   final bloc = DetailBloc();
   List<String> images = [];
   final CarouselSliderController _controller = CarouselSliderController();
   int _current = 0;
+  String name = "";
+  String axiom = "";
+  int price = 0;
+
 
   @override
   void initState() {
     bloc.add(GetDetail(widget.productId));
+    isFavourite = HiveHelper.isFavourite(widget.productId);
     super.initState();
   }
 
@@ -41,6 +50,29 @@ class _DetailScreenState extends State<DetailScreen> {
       value: bloc,
       child: Scaffold(
         appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: InkWell(
+                onTap: () {
+                  if (isFavourite) {
+                    HiveHelper.removeFavorite(widget.productId ?? 0);
+                  } else {
+                    HiveHelper.addFavorite(
+                      Product(
+                        id: widget.productId,
+                        image: images[0],
+                        name: name,
+                        axiomMonthlyPrice: axiom,
+                        salePrice: price,
+                      ),
+                    );
+                  }
+                },
+                child: Icon(isFavourite ? Icons.favorite : Icons.favorite_border),
+              ),
+            ),
+          ],
           backgroundColor: Color(0xfff8ad0e),
           elevation: 0,
           flexibleSpace: Padding(
