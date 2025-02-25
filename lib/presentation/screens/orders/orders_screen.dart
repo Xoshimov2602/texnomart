@@ -95,7 +95,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             imageUrl: state.data?[index].image ?? "",
                             onBasketClick: () {},
                             onLikeClick: () {},
-                            price: state.data?[index].salePrice ?? 0,
+                            price: state.data?[index].salePrice ?? 0, onCartUpdated: () {setState(() {
+
+                            });  },
                           );
                         },
                         separatorBuilder:

@@ -4,6 +4,7 @@ import '../models/cart/cart_model.dart';
 import '../models/product/product_model.dart';
 
 class HiveHelper {
+
   static Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
     Hive.registerAdapter(ProductAdapter());
@@ -55,6 +56,11 @@ class HiveHelper {
   // Retrieve all cart items
   static List<CartModel> getCartItems() {
     return _cartBox.values.toList();
+  }
+
+  // Retrieve all cart items
+  static int getCartCount() {
+    return _cartBox.values.toList().length;
   }
 
 

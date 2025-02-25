@@ -469,6 +469,9 @@ class _MainScreenState extends State<MainScreen> {
                                     );
                                   },
                                   stickers: null,
+                                    onCartUpdated: () {setState(() {
+
+                                    });   }
                                 );
                               },
                             ),
@@ -613,6 +616,9 @@ class _MainScreenState extends State<MainScreen> {
                                     );
                                   },
                                   stickers: null,
+                                    onCartUpdated: () {setState(() {
+
+                                    });   }
                                 );
                               },
                             ),
@@ -710,8 +716,11 @@ class _MainScreenState extends State<MainScreen> {
                                     );
                                   },
                                   stickers: null,
+                                    onCartUpdated: () {setState(() {
+
+                                    });   }
                                 );
-                                ;
+
                               },
                             ),
                           ),

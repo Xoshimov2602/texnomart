@@ -1,6 +1,7 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:texnomart_clone/data/source/remote/response/collections/collecti
 import '../../data/hive/hive_helper.dart';
 import '../../data/models/cart/cart_model.dart';
 import '../../data/models/product/product_model.dart';
+import '../../main/bloc/main_bloc.dart';
 
 class ItemProduct extends StatelessWidget {
   const ItemProduct({
@@ -151,6 +153,7 @@ Widget hitProductCard({
   required CollectionsStickers? stickers,
   required int price,
   required Function onClick,
+  required Function onCartUpdated,
 }) {
   return InkWell(
     onTap: () {
@@ -368,6 +371,7 @@ Widget _buildShoppingCartButton({
         onTap: () {
           if (isInCart) {
             HiveHelper.removeFromCart(productId);
+            context.read<MainBloc>().add(Decrease());
           } else {
             HiveHelper.addToCart(
               CartModel(
@@ -379,6 +383,7 @@ Widget _buildShoppingCartButton({
                 isChecked: false,
               ),
             );
+            context.read<MainBloc>().add(Increase());
           }
           // onClick.call();
         },
@@ -402,6 +407,7 @@ Widget horizontalProductCard({
   required Function onLikeClick,
   required Function onBasketClick,
   required int price,
+  required VoidCallback onCartUpdated,
 }) {
   return InkWell(
     onTap: () {
@@ -790,9 +796,6 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
   }
 }
 
-// String cleanHtml(String html) {
-//   return html.replaceAll("<string>", "");
-// }
 String cleanHtml(String html) {
   return html.replaceAll(RegExp(r'<[^>]*>'), '').trim();
 }

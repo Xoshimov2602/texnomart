@@ -626,7 +626,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                           ),
                                         );
                                       },
-                                      stickers: null,
+                                      stickers: null, onCartUpdated: (){},
                                     );
                                   },
                                 ),

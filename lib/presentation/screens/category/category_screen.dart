@@ -7,6 +7,8 @@ import 'package:texnomart_clone/presentation/screens/category/bloc/category_bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:texnomart_clone/presentation/screens/detail/detail_screen.dart';
 
+import '../../../main/bloc/main_bloc.dart';
+
 class CategoryScreen extends StatefulWidget {
   final String slug;
   final String category;
@@ -207,7 +209,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ),
                               );
                             },
-                            stickers: null,
+                            stickers: null, onCartUpdated: () { setState(() {
+                              context.read<MainBloc>().add(Increase());
+                            });  },
                           );
                         },
                       ),

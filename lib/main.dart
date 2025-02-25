@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:texnomart_clone/data/hive/hive_helper.dart';
 import 'package:texnomart_clone/presentation/screens/holder/holder_screen.dart';
 
 import 'di/di.dart';
+import 'main/bloc/main_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveHelper.init();
   setup();
-  runApp(const MyApp());
+  runApp(BlocProvider(
+    create: (context) => MainBloc(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
