@@ -184,24 +184,21 @@ Widget hitProductCard({
                           Colors.grey[100]!,
                           BlendMode.multiply,
                         ),
-                        child: Transform.rotate(
-                          angle: 3.1416,
-                          child: CachedNetworkImage(
-                            matchTextDirection: true,
-                            imageUrl: imageUrl,
-                            width: 180,
-                            placeholder:
-                                (context, url) => Shimmer.fromColors(
-                                  baseColor: Colors.grey[300]!,
-                                  highlightColor: Colors.grey[100]!,
-                                  child: Container(color: Colors.white),
-                                ),
-                            errorWidget:
-                                (context, url, error) => const Center(
-                                  child: Icon(Icons.error, color: Colors.red),
-                                ),
-                            height: 180,
-                          ),
+                        child: CachedNetworkImage(
+                          matchTextDirection: true,
+                          imageUrl: imageUrl,
+                          width: 180,
+                          placeholder:
+                              (context, url) => Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Container(color: Colors.white),
+                              ),
+                          errorWidget:
+                              (context, url, error) => const Center(
+                                child: Icon(Icons.error, color: Colors.red),
+                              ),
+                          height: 180,
                         ),
                       ),
                     ),
@@ -781,6 +778,7 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
                     ),
                     IconButton(
                       onPressed: () {
+                        context.read<MainBloc>().add(Decrease());
                         widget.onDeleteClick.call();
                       },
                       icon: const Icon(Icons.delete, color: Colors.red),
