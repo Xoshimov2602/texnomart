@@ -11,6 +11,8 @@ import 'package:texnomart_clone/data/source/remote/api/detail_about/detail_about
 import 'package:texnomart_clone/data/source/remote/api/details/details_api.dart';
 import 'package:texnomart_clone/data/source/remote/api/info/info_api.dart';
 import 'package:texnomart_clone/data/source/remote/api/leader_sale/leader_sale_api.dart';
+import 'package:texnomart_clone/data/source/remote/api/markets/markets_api.dart';
+import 'package:texnomart_clone/data/source/remote/api/markets_profile/markets_profile_api.dart';
 import 'package:texnomart_clone/data/source/remote/response/category_chips/category_chips_response.dart';
 import '../data/repository/main/product_repository.dart';
 import '../data/source/remote/api/collections/collections_api.dart';
@@ -46,7 +48,8 @@ void setup () {
   getIt.registerSingleton<InfoApi>(InfoApi(getIt<Dio>()));
   getIt.registerSingleton<DetailAboutApi>(DetailAboutApi(getIt<Dio>()));
   getIt.registerSingleton<AccessoriesApi>(AccessoriesApi(getIt<Dio>()));
-
+  getIt.registerSingleton<MarketsApi>(MarketsApi(getIt<Dio>()));
+  getIt.registerSingleton<MarketsProfileApi>(MarketsProfileApi(getIt<Dio>()));
 
   getIt.registerSingleton<ProductRepository>(ProductRepositoryimpl());
 }

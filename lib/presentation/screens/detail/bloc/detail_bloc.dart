@@ -44,22 +44,5 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
         emit(state.copyWith(status: DetailsStatus.failure));
       }
     });
-    // on<ToggleFavorite>((event, emit) {
-    //   final newFavStatus = !state.isFavourite;
-    //   if (newFavStatus) {
-    //     HiveHelper.addFavorite(
-    //       Product(
-    //         id: event.productId,
-    //         image: state.detail?.data?.data?.largeImages?[0] ?? '',
-    //         name:  state.detail?.data?.data?.name ?? '',
-    //         axiomMonthlyPrice:  state.detail?.data?.data?.saleMonths?.first ?? '',
-    //         salePrice:  state.detail?.data?.data?.salePrice ?? 0,
-    //       ),
-    //     );
-    //   } else {
-    //     HiveHelper.removeFavorite(event.productId);
-    //   }
-    //   emit(state.copyWith(isFavourite: newFavStatus));
-    // });
   }
 }
