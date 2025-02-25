@@ -8,6 +8,7 @@ import 'package:texnomart_clone/data/source/remote/response/details/details_resp
 import 'package:texnomart_clone/data/source/remote/response/info/info_response.dart';
 import 'package:texnomart_clone/data/source/remote/response/leader_sale/leader_sale_response.dart';
 import 'package:texnomart_clone/data/source/remote/response/markets/markets_response.dart';
+import 'package:texnomart_clone/data/source/remote/response/markets_profile/markets_profile.dart';
 import '../../source/remote/response/collections/collections_response.dart';
 import '../../source/remote/response/hit_products/hit_products_response.dart';
 import '../../source/remote/response/new_products/new_products_response.dart';
@@ -29,4 +30,5 @@ abstract class ProductRepository{
   Future<DetailAboutResponse> getDataAbout(int id);
   Future<AccessoriesResponse> getAccessories(int id);
   Future<MarketsResponse> getMarkets (int id);
+  Future<MarketsProfile> getMarketsProfile ();
 }

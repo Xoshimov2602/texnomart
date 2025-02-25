@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MarketsScreen()),
+                      MaterialPageRoute(builder: (context) => MarketsScreen(id: 0,)),
                     );
                   },
                   child: Container(

@@ -17,9 +17,11 @@ import 'package:texnomart_clone/data/source/remote/response/detail_about/detail_
 import 'package:texnomart_clone/data/source/remote/response/details/details_response.dart';
 import 'package:texnomart_clone/data/source/remote/response/info/info_response.dart';
 import 'package:texnomart_clone/data/source/remote/response/leader_sale/leader_sale_response.dart';
+import 'package:texnomart_clone/data/source/remote/response/markets_profile/markets_profile.dart';
 import '../../../di/di.dart';
 import '../../source/remote/api/collections/collections_api.dart';
 import '../../source/remote/api/hit_products/hit_products_api.dart';
+import '../../source/remote/api/markets_profile/markets_profile_api.dart';
 import '../../source/remote/api/new_products/new_products_api.dart';
 import '../../source/remote/api/special_brands/special_brands_api.dart';
 import '../../source/remote/api/top_categories/special_category_api.dart';
@@ -44,6 +46,7 @@ class ProductRepositoryimpl extends ProductRepository{
   final accessoriesApi = getIt<AccessoriesApi> ();
   final detailAboutApi = getIt<DetailAboutApi> ();
   final marketsApi = getIt<MarketsApi>();
+  final marketsProfileApi = getIt<MarketsProfileApi>();
 
   final allCategories = getIt<AllCategoriesApi>();
 
@@ -182,6 +185,18 @@ class ProductRepositoryimpl extends ProductRepository{
   Future<MarketsResponse> getMarkets(int id) async {
     try {
       final result = await marketsApi.getMarkets(id: id);
+      print("OPOPOPOPPPOPOP  in repository ${result.data?.data?[0].name}");
+      return result;
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MarketsProfile> getMarketsProfile() async {
+    try {
+      final result = await marketsProfileApi.getMarketsFromProfile();
+      print("OPOPOPOPPPOPOP  in repository second items ${result.data?.data?[0].name}");
       return result;
     } on DioException {
       rethrow;

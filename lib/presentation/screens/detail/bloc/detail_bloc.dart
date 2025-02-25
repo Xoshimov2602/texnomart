@@ -6,6 +6,7 @@ import 'package:texnomart_clone/data/source/remote/response/detail_about/detail_
 import 'package:texnomart_clone/data/source/remote/response/details/details_response.dart';
 import 'package:texnomart_clone/data/source/remote/response/info/info_response.dart';
 import 'package:texnomart_clone/data/source/remote/response/leader_sale/leader_sale_response.dart';
+import 'package:texnomart_clone/data/source/remote/response/markets/markets_response.dart';
 import 'package:texnomart_clone/di/di.dart';
 
 import '../../../../data/hive/hive_helper.dart';
@@ -27,9 +28,8 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
         final third = await repository.getInfo(event.id);
         final fourth = await repository.getDataAbout(event.id);
         var fifth = await repository.getAccessories(event.id);
-        print("JJJJJJJJ  ${fifth.data?.data?.length}");
+        // var sixth = await repository.getMarkets(event.id);
         if (fifth.data?.data == null && fifth.data?.data?.length == 0) fifth = [] as AccessoriesResponse;
-        print("JJJJJJJJ after  ${fifth.data?.data?.length}");
         emit(
           state.copyWith(
             status: DetailsStatus.success,
@@ -38,6 +38,7 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
             info: third,
             accessories: fifth,
             about: fourth,
+            // markets: sixth
           ),
         );
       } on DioException {

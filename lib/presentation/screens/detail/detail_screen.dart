@@ -7,6 +7,7 @@ import 'package:texnomart_clone/data/models/cart/cart_model.dart';
 import 'package:texnomart_clone/presentation/screens/basket/basket_screen.dart';
 import 'package:texnomart_clone/presentation/screens/detail/bloc/detail_bloc.dart';
 import 'package:texnomart_clone/presentation/screens/detail/component/item_detail.dart';
+import 'package:texnomart_clone/presentation/screens/markets/markets_screen.dart';
 import 'package:texnomart_clone/presentation/screens/read_detail/read_detail_screen.dart';
 import '../../../data/hive/hive_helper.dart';
 import '../../../data/models/product/product_model.dart';
@@ -430,6 +431,62 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                           ),
                           Padding(
+                            padding: const EdgeInsets.only(
+                              right: 16,
+                              left: 16,
+                              top: 10,
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.grey[400]!,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (contex) => MarketsScreen(id: widget.productId),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.home_work_rounded, size: 24),
+                                    const SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Bepul olib ketish",
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          "${state.markets?.data?.data?.length ?? 0}ta do'konda naqd pul bilan mavjud",
+                                          style: const TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 16,
                               vertical: 10,
@@ -626,7 +683,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                           ),
                                         );
                                       },
-                                      stickers: null, onCartUpdated: (){},
+                                      stickers: null,
+                                      onCartUpdated: () {},
                                     );
                                   },
                                 ),
