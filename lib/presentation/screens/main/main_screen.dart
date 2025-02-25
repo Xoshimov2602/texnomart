@@ -12,7 +12,10 @@ import '../../componenets/item_top_category.dart';
 import 'bloc/main_bloc.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  const MainScreen({
+    super.key,
+    required void Function(int count) updateBasketCount,
+  });
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -317,7 +320,8 @@ class _MainScreenState extends State<MainScreen> {
                                             MaterialPageRoute(
                                               builder:
                                                   (context) =>
-                                                      CategoryScreen(slug: a),
+                                                      CategoryScreen(slug: a,
+                                                        category: specialCategory.title ?? "",),
                                             ),
                                           );
                                           print(
@@ -432,6 +436,34 @@ class _MainScreenState extends State<MainScreen> {
                                                       ?.data[index]
                                                       .id ??
                                                   0,
+                                              name:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .name ??
+                                                  "",
+                                              image:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .image ??
+                                                  "",
+                                              axiom:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .axiomMonthlyPrice ??
+                                                  "",
+                                              price:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .salePrice ??
+                                                  0,
                                             ),
                                       ),
                                     );
@@ -491,24 +523,92 @@ class _MainScreenState extends State<MainScreen> {
                           SizedBox(
                             height: 400, // Ensures ListView has a fixed height
                             child: ListView.builder(
-                              physics: BouncingScrollPhysics(), // Smooth scrolling
-                              shrinkWrap: true, // Prevent infinite height issues
+                              physics: BouncingScrollPhysics(),
+                              // Smooth scrolling
+                              shrinkWrap: true,
+                              // Prevent infinite height issues
                               scrollDirection: Axis.horizontal,
-                              itemCount: state.newProducts?.data?.data?.length ?? 1,
+                              itemCount:
+                                  state.newProducts?.data?.data?.length ?? 1,
                               itemBuilder: (context, index) {
                                 return hitProductCard(
-                                  productId: state.newProducts?.data?.data?[index].id ?? 0,
-                                  title: state.newProducts?.data?.data?[index].name ?? "",
-                                  imageUrl: state.newProducts?.data?.data?[index].image ?? "",
-                                  subtitle: state.newProducts?.data?.data?[index].axiomMonthlyPrice ?? "",
-                                  price: state.newProducts?.data?.data?[index].salePrice ?? 0,
+                                  productId:
+                                      state
+                                          .newProducts
+                                          ?.data
+                                          ?.data?[index]
+                                          .id ??
+                                      0,
+                                  title:
+                                      state
+                                          .newProducts
+                                          ?.data
+                                          ?.data?[index]
+                                          .name ??
+                                      "",
+                                  imageUrl:
+                                      state
+                                          .newProducts
+                                          ?.data
+                                          ?.data?[index]
+                                          .image ??
+                                      "",
+                                  subtitle:
+                                      state
+                                          .newProducts
+                                          ?.data
+                                          ?.data?[index]
+                                          .axiomMonthlyPrice ??
+                                      "",
+                                  price:
+                                      state
+                                          .newProducts
+                                          ?.data
+                                          ?.data?[index]
+                                          .salePrice ??
+                                      0,
                                   onClick: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => DetailScreen(
-                                          productId: state.newProducts?.data?.data?[index].id ?? 0,
-                                        ),
+                                        builder:
+                                            (context) => DetailScreen(
+                                              productId:
+                                                  state
+                                                      .newProducts
+                                                      ?.data
+                                                      ?.data?[index]
+                                                      .id ??
+                                                  0,
+                                              name:
+                                                  state
+                                                      .newProducts
+                                                      ?.data
+                                                      ?.data?[index]
+                                                      .name ??
+                                                  "",
+                                              image:
+                                                  state
+                                                      .newProducts
+                                                      ?.data
+                                                      ?.data?[index]
+                                                      .image ??
+                                                  "",
+                                              axiom:
+                                                  state
+                                                      .newProducts
+                                                      ?.data
+                                                      ?.data?[index]
+                                                      .axiomMonthlyPrice ??
+                                                  "",
+                                              price:
+                                                  state
+                                                      .newProducts
+                                                      ?.data
+                                                      ?.data?[index]
+                                                      .salePrice ??
+                                                  0,
+                                            ),
                                       ),
                                     );
                                   },
@@ -526,20 +626,43 @@ class _MainScreenState extends State<MainScreen> {
                               itemBuilder: (context, index) {
                                 return hitProductCard(
                                   productId:
-                                  state.collections?.data?.data?[index].id ?? 0,
+                                      state
+                                          .collections
+                                          ?.data
+                                          ?.data?[index]
+                                          .id ??
+                                      0,
                                   title:
-                                  state.collections?.data?.data?[index].name ?? "",
+                                      state
+                                          .collections
+                                          ?.data
+                                          ?.data?[index]
+                                          .name ??
+                                      "",
                                   imageUrl:
-                                  state.collections?.data?.data?[0].products?[index].image ?? "",
+                                      state
+                                          .collections
+                                          ?.data
+                                          ?.data?[0]
+                                          .products?[index]
+                                          .image ??
+                                      "",
                                   subtitle:
-                                  state
-                                      .collections
-                                      ?.data?.data?[0].products?[index]
-                                      .axiomMonthlyPrice ??
+                                      state
+                                          .collections
+                                          ?.data
+                                          ?.data?[0]
+                                          .products?[index]
+                                          .axiomMonthlyPrice ??
                                       "",
                                   // monthSale: "499 935 so'mdan / 24 oy",
                                   price:
-                                  state.collections?.data?.data?[0].products?[index].salePrice ??
+                                      state
+                                          .collections
+                                          ?.data
+                                          ?.data?[0]
+                                          .products?[index]
+                                          .salePrice ??
                                       0,
                                   onClick: () {
                                     Navigator.push(
@@ -547,19 +670,48 @@ class _MainScreenState extends State<MainScreen> {
                                       MaterialPageRoute(
                                         builder:
                                             (context) => DetailScreen(
-                                          productId:
-                                          state
-                                              .data
-                                              ?.data
-                                              ?.data[index]
-                                              .id ??
-                                              0,
-                                        ),
+                                              productId:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .id ??
+                                                  0,
+                                              name:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .name ??
+                                                  "",
+                                              image:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .image ??
+                                                  "",
+                                              axiom:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .axiomMonthlyPrice ??
+                                                  "",
+                                              price:
+                                                  state
+                                                      .data
+                                                      ?.data
+                                                      ?.data[index]
+                                                      .salePrice ??
+                                                  0,
+                                            ),
                                       ),
                                     );
                                   },
                                   stickers: null,
-                                );;
+                                );
+                                ;
                               },
                             ),
                           ),
@@ -570,16 +722,10 @@ class _MainScreenState extends State<MainScreen> {
                 }
               case MainStatus.error:
                 {
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   SnackBar(content: Text('Unknown Error!')),
-                  // );
                   return Center(child: Text("Unknown Error"));
                 }
               case null:
                 {
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   SnackBar(content: Text('Case is null!')),
-                  // );
                   return Center(child: Text("Case is null"));
                 }
             }

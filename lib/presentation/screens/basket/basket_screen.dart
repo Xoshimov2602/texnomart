@@ -8,7 +8,10 @@ import 'package:texnomart_clone/presentation/screens/detail/detail_screen.dart';
 import '../../componenets/item_product.dart';
 
 class BasketScreen extends StatefulWidget {
-  const BasketScreen({super.key});
+  const BasketScreen({
+    super.key,
+    required void Function(int count) updateBasketCount,
+  });
 
   @override
   State<BasketScreen> createState() => _BasketScreenState();
@@ -60,7 +63,10 @@ class _BasketScreenState extends State<BasketScreen> {
     return BlocProvider.value(
       value: bloc,
       child: Scaffold(
-        appBar: AppBar(title: Text("Basket"), backgroundColor: Color(0xfff8ad0e),),
+        appBar: AppBar(
+          title: Text("Basket"),
+          backgroundColor: Color(0xfff8ad0e),
+        ),
         body: BlocConsumer<BasketBloc, BasketState>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -85,8 +91,14 @@ class _BasketScreenState extends State<BasketScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailScreen(productId: product.id ?? 0),
+                                builder:
+                                    (context) => DetailScreen(
+                                      productId: product.id ?? 0,
+                                      name: product.name ?? "",
+                                      image: product.image ?? "",
+                                      axiom: product.axiomMonthlyPrice ?? "",
+                                      price: product.salePrice ?? 0,
+                                    ),
                               ),
                             );
                           },
@@ -115,7 +127,8 @@ class _BasketScreenState extends State<BasketScreen> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
-                          top: BorderSide(color: Colors.grey.shade300)),
+                        top: BorderSide(color: Colors.grey.shade300),
+                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,13 +136,17 @@ class _BasketScreenState extends State<BasketScreen> {
                         Text(
                           "Total Cost:",
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
                           formatPrice(_calculateTotalCost()),
-                          style: TextStyle(fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
                         ),
                       ],
                     ),

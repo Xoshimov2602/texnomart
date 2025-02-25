@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:texnomart_clone/presentation/componenets/item_product.dart';
 
 class ReadDetailScreen extends StatelessWidget {
   final String detail;
@@ -28,7 +29,7 @@ class ReadDetailScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text(detail, style: TextStyle(fontSize: 16, color: Colors.black),),
+        child: Text(cleanHtml(detail), style: TextStyle(fontSize: 16, color: Colors.black),),
       ),
     );
   }

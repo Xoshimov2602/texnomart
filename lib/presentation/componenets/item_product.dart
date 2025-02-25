@@ -750,14 +750,28 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
                 ),
                 Row(
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        widget.onLikeClick.call();
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          if (isFavourite) {
+                            HiveHelper.removeFavorite(widget.productId ?? 0);
+                          } else {
+                            HiveHelper.addFavorite(
+                              Product(
+                                id: widget.productId,
+                                axiomMonthlyPrice: widget.subtitle,
+                                image: widget.imageUrl,
+                                name: widget.title,
+                                salePrice: widget.price,
+                              ),
+                            );
+                          }
+                          isFavourite = !isFavourite; // Toggle the favorite state
+                        });
                       },
-                      icon:
-                          isFavourite
-                              ? Icon(Icons.favorite)
-                              : Icon(Icons.favorite_border),
+                      child: _buildCircleIcon(
+                        isFavourite ? Icons.favorite : Icons.favorite_border,
+                      ),
                     ),
                     IconButton(
                       onPressed: () {
@@ -774,4 +788,11 @@ class _ItemProductWithCounterState extends State<ItemProductWithCounter> {
       ),
     );
   }
+}
+
+// String cleanHtml(String html) {
+//   return html.replaceAll("<string>", "");
+// }
+String cleanHtml(String html) {
+  return html.replaceAll(RegExp(r'<[^>]*>'), '').trim();
 }

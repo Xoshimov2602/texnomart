@@ -3,18 +3,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:texnomart_clone/data/models/cart/cart_model.dart';
+import 'package:texnomart_clone/presentation/screens/basket/basket_screen.dart';
 import 'package:texnomart_clone/presentation/screens/detail/bloc/detail_bloc.dart';
 import 'package:texnomart_clone/presentation/screens/detail/component/item_detail.dart';
 import 'package:texnomart_clone/presentation/screens/read_detail/read_detail_screen.dart';
-
 import '../../../data/hive/hive_helper.dart';
 import '../../../data/models/product/product_model.dart';
 import '../../componenets/item_product.dart';
 
 class DetailScreen extends StatefulWidget {
   final int productId;
+  final String name;
+  final String image;
+  final String axiom;
+  final int price;
 
-  const DetailScreen({super.key, required this.productId});
+  const DetailScreen({
+    super.key,
+    required this.productId,
+    required this.name,
+    required this.image,
+    required this.axiom,
+    required this.price,
+  });
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -22,14 +34,15 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   bool isFavourite = false;
+  int basketItemCount = 1;
   final bloc = DetailBloc();
   List<String> images = [];
   final CarouselSliderController _controller = CarouselSliderController();
   int _current = 0;
-  String name = "";
-  String axiom = "";
-  int price = 0;
 
+  // String name = "";
+  // String axiom = "";
+  // int price = 0;
 
   @override
   void initState() {
@@ -54,37 +67,48 @@ class _DetailScreenState extends State<DetailScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   if (isFavourite) {
-                    HiveHelper.removeFavorite(widget.productId ?? 0);
+                    await HiveHelper.removeFavorite(widget.productId);
                   } else {
-                    HiveHelper.addFavorite(
+                    await HiveHelper.addFavorite(
                       Product(
                         id: widget.productId,
-                        image: images[0],
-                        name: name,
-                        axiomMonthlyPrice: axiom,
-                        salePrice: price,
+                        axiomMonthlyPrice: widget.axiom,
+                        image: widget.image,
+                        name: widget.name,
+                        salePrice: widget.price,
                       ),
                     );
                   }
+                  setState(() {
+                    isFavourite = !isFavourite;
+                  });
                 },
-                child: Icon(isFavourite ? Icons.favorite : Icons.favorite_border),
+                child: Icon(
+                  isFavourite ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.red,
+                ),
               ),
             ),
           ],
-          backgroundColor: Color(0xfff8ad0e),
+          backgroundColor: const Color(0xfff8ad0e),
           elevation: 0,
-          flexibleSpace: Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 10),
+          flexibleSpace: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(left: 40),
-              child: Text(
-                "category*",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: Colors.black,
-                  fontSize: 20,
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 40),
+                child: Text(
+                  widget.name.length > 20
+                      ? widget.name.substring(0, 20) + '...'
+                      : widget.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w900,
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
                 ),
               ),
             ),
@@ -305,27 +329,100 @@ class _DetailScreenState extends State<DetailScreen> {
                                         right: 10.0,
                                         bottom: 10,
                                       ),
-                                      child: InkWell(
-                                        child: Container(
-                                          height: 45,
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                            color: Colors.orangeAccent,
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "Savatchaga qo'shish",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black,
+                                      child:
+                                          HiveHelper.isInCart(widget.productId)
+                                              ? InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder:
+                                                          (
+                                                            context,
+                                                          ) => BasketScreen(
+                                                            updateBasketCount:
+                                                                updateBasketCount,
+                                                          ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                        left: 10.0,
+                                                        right: 10.0,
+                                                        bottom: 10,
+                                                      ),
+                                                  child: InkWell(
+                                                    child: Container(
+                                                      height: 45,
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        // White background
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              10,
+                                                            ),
+                                                        border: Border.all(
+                                                          color:
+                                                              Colors
+                                                                  .orangeAccent, // Border with orange accent color
+                                                        ),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "savatda", // Updated text
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color:
+                                                                Colors
+                                                                    .black, // Matching text color with border
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              : InkWell(
+                                                onTap: () {
+                                                  HiveHelper.addToCart(
+                                                    CartModel(
+                                                      id: widget.productId,
+                                                      name: widget.name,
+                                                      image: widget.image,
+                                                      salePrice: widget.price,
+                                                      axiomMonthlyPrice:
+                                                          widget.axiom,
+                                                      quantity: 1,
+                                                    ),
+                                                  );
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  height: 45,
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                    color: Colors.orangeAccent,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "Savatchaga qo'shish",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ),
                                   ],
                                 ),
@@ -342,7 +439,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              "${state.info?.data?.data}",
+                              cleanHtml(state.info?.data?.data ?? ""),
                               maxLines: 4,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -392,7 +489,14 @@ class _DetailScreenState extends State<DetailScreen> {
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: state.about?.data?.data?.length ?? 0,
+                                itemCount:
+                                    state
+                                        .about
+                                        ?.data
+                                        ?.data?[0]
+                                        .characters
+                                        ?.length ??
+                                    0,
                                 itemBuilder: (context, index) {
                                   return ItemDetail(
                                     type:
@@ -443,92 +547,89 @@ class _DetailScreenState extends State<DetailScreen> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: Container(
-                              height: 400,
-                              child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    state
+                          Visibility(
+                            visible:
+                                (state
                                         .accessories
                                         ?.data
                                         ?.data
                                         ?.first
                                         .products
-                                        ?.length ??
-                                    1,
-                                itemBuilder: (context, index) {
-                                  return hitProductCard(
-                                    productId:
+                                        ?.isNotEmpty ??
+                                    false),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Container(
+                                height: 400,
+                                child: ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      state
+                                          .accessories
+                                          ?.data
+                                          ?.data
+                                          ?.first
+                                          .products
+                                          ?.length ??
+                                      0,
+                                  itemBuilder: (context, index) {
+                                    final product =
                                         state
                                             .accessories
                                             ?.data
                                             ?.data
                                             ?.first
-                                            .products?[index]
-                                            .id ??
-                                        0,
-                                    title:
-                                        state
-                                            .accessories
-                                            ?.data
-                                            ?.data
-                                            ?.first
-                                            .products?[index]
-                                            .name ??
-                                        "",
-                                    imageUrl:
-                                        state
-                                            .accessories
-                                            ?.data
-                                            ?.data
-                                            ?.first
-                                            .products?[index]
-                                            .image ??
-                                        "",
-                                    subtitle:
-                                        state
-                                            .accessories
-                                            ?.data
-                                            ?.data
-                                            ?.first
-                                            .products?[index]
-                                            .axiomMonthlyPrice ??
-                                        "",
-                                    price:
-                                        state
-                                            .accessories
-                                            ?.data
-                                            ?.data
-                                            ?.first
-                                            .products?[index]
-                                            .salePrice ??
-                                        0,
-                                    onClick: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => DetailScreen(
-                                                productId:
-                                                    state
-                                                        .accessories
-                                                        ?.data
-                                                        ?.data
-                                                        ?.first
-                                                        .products?[index]
-                                                        .id ??
-                                                    0,
-                                              ),
-                                        ),
-                                      );
-                                    },
-                                    stickers: null,
-                                  );
-                                },
+                                            .products;
+
+                                    if (product == null ||
+                                        index >= product.length) {
+                                      return SizedBox(); // Prevent crash if index is out of bounds
+                                    }
+                                    print(
+                                      "KKKKKKK in screen accessories ${product.length}",
+                                    );
+                                    print(
+                                      "KKKKKKK in screen accessories second ${state.accessories?.data?.data?.first.products?.length}",
+                                    );
+                                    return hitProductCard(
+                                      productId: product[index].id ?? 0,
+                                      title: product[index].name ?? "",
+                                      imageUrl: product[index].image ?? "",
+                                      subtitle:
+                                          product[index].axiomMonthlyPrice ??
+                                          "",
+                                      price: product[index].salePrice ?? 0,
+                                      onClick: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => DetailScreen(
+                                                  productId:
+                                                      product[index].id ?? 0,
+                                                  name:
+                                                      product[index].name ?? "",
+                                                  image:
+                                                      product[index].image ??
+                                                      "",
+                                                  axiom:
+                                                      product[index]
+                                                          .axiomMonthlyPrice ??
+                                                      "",
+                                                  price:
+                                                      product[index]
+                                                          .salePrice ??
+                                                      0,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      stickers: null,
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -539,7 +640,6 @@ class _DetailScreenState extends State<DetailScreen> {
                 }
               case DetailsStatus.failure:
                 {
-                  print("llllllllllll error");
                   return Text('Unknown error');
                 }
               case DetailsStatus.loading:
@@ -559,5 +659,11 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
       ),
     );
+  }
+
+  void updateBasketCount(int count) {
+    setState(() {
+      basketItemCount = count;
+    });
   }
 }

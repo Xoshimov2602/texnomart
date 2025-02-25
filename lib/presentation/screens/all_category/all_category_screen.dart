@@ -84,7 +84,8 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CategoryScreen(slug: state.allCategories?.data?.categories?[index].slug ?? ""),
+                                builder: (context) => CategoryScreen(slug: state.allCategories?.data?.categories?[index].slug ?? "",
+                                  category: state.allCategories?.data?.categories?[index].name ?? "",),
                               ),
                             );
                           },

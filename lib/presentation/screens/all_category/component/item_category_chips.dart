@@ -12,16 +12,14 @@ class ItemCategoryChip extends StatefulWidget {
   State<ItemCategoryChip> createState() => _ItemCategoryChipState();
 }
 
-
-
 class _ItemCategoryChipState extends State<ItemCategoryChip> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => widget.onPressed(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 5),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 5),
+      child: InkWell(
+        onTap: (){widget.onPressed();},
         child: Container(
           decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.circular(10)),
           height: 30,

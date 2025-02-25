@@ -83,6 +83,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     builder:
                                         (context) => DetailScreen(
                                           productId: state.data![index].id ?? 0,
+                                          name: state.data![index].name ?? "",
+                                          image: state.data![index].image ??"",
+                                          axiom: state.data![index].axiomMonthlyPrice ?? "",
+                                          price: state.data![index].salePrice ?? 0,
                                         ),
                                   ),
                                 );
